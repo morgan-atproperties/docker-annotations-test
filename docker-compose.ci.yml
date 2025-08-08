@@ -1,0 +1,7 @@
+services:
+  tests:
+    extends:
+      file: "docker-compose.yml"
+      service: tests
+    build:
+      target: base # do not install dependencies because we will mount a fresh checkout
