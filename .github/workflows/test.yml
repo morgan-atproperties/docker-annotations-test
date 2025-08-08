@@ -16,4 +16,4 @@ jobs:
         run: docker compose up -d
 
       - name: Run tests
-        run: docker compose run tests jest
+        run: docker compose run tests jest --coverage
