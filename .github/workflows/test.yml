@@ -13,7 +13,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Start containers
-        run: docker compose up -d
+        run: docker compose -f docker-compose.ci.yml up -d
+
+      # install any dependencies since this is a fresh checkout
+      - name: Install dependencies
+        run: docker compose -f docker-compose.ci.yml run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} --workdir ${GITHUB_WORKSPACE} tests yarn install
 
       - name: Run tests
-        run: docker compose run tests jest --coverage
+        run: docker compose -f docker-compose.ci.yml run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} --workdir ${GITHUB_WORKSPACE} tests jest --coverage --ci --json --testLocationInResults --outputFile=report.json
+
+      - name: Collect test coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        if: always() # we should still try to run this even if there are test failures
+        with:
+          coverage-file: ./report.json
+          base-coverage-file: ./report.json
