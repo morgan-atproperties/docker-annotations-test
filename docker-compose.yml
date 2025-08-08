@@ -1,0 +1,7 @@
+services:
+  tests:
+    build:
+      context: .
+      target: install
+    stdin_open: true
+    tty: true
