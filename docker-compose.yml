@@ -1,0 +1,8 @@
+services:
+  tests:
+    build:
+      context: .
+      target: install
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
