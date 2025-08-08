@@ -1,0 +1,19 @@
+name: Run tests
+
+on:
+  pull_request:
+
+jobs:
+  run_tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v4
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Run tests
+        run: docker compose run tests jest
